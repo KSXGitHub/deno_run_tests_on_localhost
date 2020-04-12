@@ -31,10 +31,7 @@ function contentType(path: string): string | undefined {
   return MEDIA_TYPES[extname(path)];
 }
 
-export async function serveFile(
-  req: ServerRequest,
-  filePath: string,
-): Promise<Response> {
+export async function serveFile(filePath: string): Promise<Response> {
   const [file, fileInfo] = await Promise.all(
     [Deno.open(filePath), Deno.stat(filePath)],
   );
@@ -51,8 +48,8 @@ export async function serveFile(
   };
 }
 
-function serveFallback(req: ServerRequest, e: Error): Promise<Response> {
-  if (e instanceof Deno.errors.NotFound) {
+function serveFallback(error: Error): Promise<Response> {
+  if (error instanceof Deno.errors.NotFound) {
     return Promise.resolve({
       status: 404,
       body: encoder.encode("Not found"),
@@ -110,11 +107,11 @@ export class FileServer {
             body: "Cannot serve directory",
           };
         } else {
-          response = await serveFile(req, fsPath);
+          response = await serveFile(fsPath);
         }
       } catch (error) {
         this.#param.onError?.(error);
-        response = await serveFallback(req, error);
+        response = await serveFallback(error);
       } finally {
         if (this.#param.cors) {
           assert(response);
