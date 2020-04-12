@@ -1,19 +1,14 @@
 import {
+  Server,
   ServerRequest,
   Response,
+  Status,
   posix,
   extname,
+  serve,
   listenAndServe,
   assert,
 } from "./deps.ts";
-import { Status } from "https://deno.land/std@v0.40.0/http/http_status.ts";
-
-interface EntryInfo {
-  mode: string;
-  size: string;
-  url: string;
-  name: string;
-}
 
 const MEDIA_TYPES: Record<string, string> = {
   ".md": "text/markdown",
@@ -81,16 +76,20 @@ function setCORS(res: Response): void {
   );
 }
 
-export const start = ({
-  addr,
-  target,
-  cors,
-  onError = console.error,
-  onServe = () => undefined,
-}: Param) =>
-  listenAndServe(
-    addr,
-    async (req): Promise<void> => {
+export class FileServer {
+  readonly #param: Param;
+  readonly #server: Server;
+  #stop: boolean = false;
+
+  constructor (param: Param) {
+    this.#param = param;
+    this.#server = serve(param.addr);
+  }
+
+  public async start() {
+    for await (const req of this.#server) {
+      if (this.#stop) break;
+
       let normalizedUrl = posix.normalize(req.url);
       try {
         normalizedUrl = decodeURIComponent(normalizedUrl);
@@ -99,7 +98,8 @@ export const start = ({
           throw e;
         }
       }
-      const fsPath = posix.join(target, normalizedUrl);
+
+      const fsPath = posix.join(this.#param.target, normalizedUrl);
 
       let response: Response | undefined;
       try {
@@ -113,18 +113,23 @@ export const start = ({
           response = await serveFile(req, fsPath);
         }
       } catch (error) {
-        onError(error);
+        this.#param.onError?.(error);
         response = await serveFallback(req, error);
       } finally {
-        if (cors) {
+        if (this.#param.cors) {
           assert(response);
           setCORS(response);
         }
-        onServe(req, response!);
+        this.#param.onServe?.(req, response!);
         req.respond(response!);
       }
-    },
-  );
+    }
+  }
+
+  public stop() {
+    this.#stop = true;
+  }
+}
 
 export interface Param {
   readonly onError?: (error: any) => void;
