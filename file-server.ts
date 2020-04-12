@@ -1,8 +1,6 @@
 import {
-  Server,
   ServerRequest,
   Response,
-  HTTPOptions,
   Status,
   posix,
   serve,
@@ -14,19 +12,20 @@ import setCORS from "./set-cors.ts";
 
 export class FileServer {
   readonly #param: Param;
-  readonly #server: Server;
   #stop: boolean = false;
 
   constructor(param: Param) {
     this.#param = param;
-    this.#server = serve({
-      port: param.port,
-      hostname: param.hostname,
-    });
   }
 
   public async start() {
-    for await (const req of this.#server) {
+    this.#stop = false;
+    const server = serve({
+      port: this.#param.port,
+      hostname: this.#param.hostname,
+    });
+
+    for await (const req of server) {
       if (this.#stop) break;
 
       let normalizedUrl = posix.normalize(req.url);
