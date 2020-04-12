@@ -1,7 +1,7 @@
 import { Response, Status } from "./deps.ts";
 import contentType from "./content-type.ts";
 
-export async function serveFile (filePath: string): Promise<Response> {
+export async function serveFile(filePath: string): Promise<Response> {
   const [file, fileInfo] = await Promise.all([
     Deno.open(filePath),
     Deno.stat(filePath),
