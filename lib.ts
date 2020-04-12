@@ -15,10 +15,6 @@ interface EntryInfo {
   name: string;
 }
 
-const CORSEnabled = true;
-const target = "";
-const addr = `0.0.0.0:4500`;
-
 const MEDIA_TYPES: Record<string, string> = {
   ".md": "text/markdown",
   ".html": "text/html",
@@ -44,7 +40,9 @@ export async function serveFile(
   req: ServerRequest,
   filePath: string,
 ): Promise<Response> {
-  const [file, fileInfo] = await Promise.all([Deno.open(filePath), Deno.stat(filePath)]);
+  const [file, fileInfo] = await Promise.all(
+    [Deno.open(filePath), Deno.stat(filePath)],
+  );
   const headers = new Headers();
   headers.set("content-length", fileInfo.size.toString());
   const contentTypeValue = contentType(filePath);
@@ -84,6 +82,9 @@ function setCORS(res: Response): void {
 }
 
 export const start = ({
+  addr,
+  target,
+  cors,
   onError = console.error,
   onServe = () => undefined,
 }: Param) =>
@@ -115,7 +116,7 @@ export const start = ({
         onError(error);
         response = await serveFallback(req, error);
       } finally {
-        if (CORSEnabled) {
+        if (cors) {
           assert(response);
           setCORS(response);
         }
@@ -126,6 +127,9 @@ export const start = ({
   );
 
 export interface Param {
-  onError?(error: any): void;
-  onServe?(request: ServerRequest, response: Response): void;
+  readonly onError?: (error: any) => void;
+  readonly onServe?: (request: ServerRequest, response: Response) => void;
+  readonly addr: string;
+  readonly target: string;
+  readonly cors: boolean;
 }
