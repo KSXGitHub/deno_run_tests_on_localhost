@@ -45,7 +45,7 @@ export async function serveFile(
     headers.set("content-type", contentTypeValue);
   }
   return {
-    status: 200,
+    status: Status.OK,
     body: file,
     headers,
   };
