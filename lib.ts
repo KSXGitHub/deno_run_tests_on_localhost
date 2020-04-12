@@ -52,12 +52,12 @@ async function serveFile(filePath: string): Promise<Response> {
 function serveFallback(error: Error): Promise<Response> {
   if (error instanceof Deno.errors.NotFound) {
     return Promise.resolve({
-      status: 404,
+      status: Status.NotFound,
       body: encoder.encode("Not found"),
     });
   } else {
     return Promise.resolve({
-      status: 500,
+      status: Status.InternalServerError,
       body: encoder.encode("Internal server error"),
     });
   }
