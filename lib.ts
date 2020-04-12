@@ -31,7 +31,7 @@ function contentType(path: string): string | undefined {
   return MEDIA_TYPES[extname(path)];
 }
 
-export async function serveFile(filePath: string): Promise<Response> {
+async function serveFile(filePath: string): Promise<Response> {
   const [file, fileInfo] = await Promise.all(
     [Deno.open(filePath), Deno.stat(filePath)],
   );
