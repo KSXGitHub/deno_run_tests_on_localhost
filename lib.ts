@@ -6,7 +6,6 @@ import {
   posix,
   extname,
   serve,
-  listenAndServe,
   assert,
 } from "./deps.ts";
 
