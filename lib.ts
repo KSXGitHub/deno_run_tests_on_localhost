@@ -2,6 +2,7 @@ import {
   Server,
   ServerRequest,
   Response,
+  HTTPOptions,
   Status,
   posix,
   extname,
@@ -132,7 +133,7 @@ export class FileServer {
 export interface Param {
   readonly onError?: (error: any) => void;
   readonly onServe?: (request: ServerRequest, response: Response) => void;
-  readonly addr: string;
+  readonly addr: string | HTTPOptions;
   readonly target: string;
   readonly cors: boolean;
 }

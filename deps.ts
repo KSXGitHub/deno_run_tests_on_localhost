@@ -6,6 +6,7 @@ export {
   Server,
   ServerRequest,
   Response,
+  HTTPOptions,
   Status,
   serve,
 } from "https://deno.land/std@v0.40.0/http/mod.ts";
