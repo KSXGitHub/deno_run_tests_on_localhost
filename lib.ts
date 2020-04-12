@@ -21,6 +21,7 @@ const MEDIA_TYPES: Record<string, string> = {
   ".js": "application/javascript",
   ".jsx": "text/jsx",
   ".gz": "application/gzip",
+  ".wasm": "application/wasm",
 };
 
 const encoder = new TextEncoder();
