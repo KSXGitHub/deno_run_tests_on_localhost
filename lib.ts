@@ -32,9 +32,10 @@ function contentType(path: string): string | undefined {
 }
 
 async function serveFile(filePath: string): Promise<Response> {
-  const [file, fileInfo] = await Promise.all(
-    [Deno.open(filePath), Deno.stat(filePath)],
-  );
+  const [file, fileInfo] = await Promise.all([
+    Deno.open(filePath),
+    Deno.stat(filePath),
+  ]);
   const headers = new Headers();
   headers.set("content-length", fileInfo.size.toString());
   const contentTypeValue = contentType(filePath);
@@ -78,7 +79,7 @@ export class FileServer {
   readonly #server: Server;
   #stop: boolean = false;
 
-  constructor (param: Param) {
+  constructor(param: Param) {
     this.#param = param;
     this.#server = serve(param.addr);
   }

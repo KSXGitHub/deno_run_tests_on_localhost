@@ -5,6 +5,6 @@ const fileServer = new FileServer({
   cors: true,
   onServe(request) {
     console.log(`${request.method} ${request.url}`);
-  }
+  },
 });
 await fileServer.start();
