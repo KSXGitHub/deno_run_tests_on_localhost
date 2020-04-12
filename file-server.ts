@@ -19,7 +19,10 @@ export class FileServer {
 
   constructor(param: Param) {
     this.#param = param;
-    this.#server = serve(param.addr);
+    this.#server = serve({
+      port: param.port,
+      hostname: param.hostname,
+    });
   }
 
   public async start() {
@@ -70,7 +73,8 @@ export class FileServer {
 export interface Param {
   readonly onError?: (error: any) => void;
   readonly onServe?: (request: ServerRequest, response: Response) => void;
-  readonly addr: string | HTTPOptions;
+  readonly port: number;
+  readonly hostname?: string;
   readonly target: string;
   readonly cors: boolean;
 }
