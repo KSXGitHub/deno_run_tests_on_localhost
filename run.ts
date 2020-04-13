@@ -24,14 +24,13 @@ export async function run(param: Param): Promise<Deno.ProcessStatus> {
     permissions = [],
     args = [],
     cors = false,
-    list,
+    list = await getDefaultList(),
     hostname,
     port,
     onServe,
   } = param;
 
-  const testFiles = (list || await getDefaultList())
-    .map(filename => `http://${hostname}:${port}/${filename}`);
+  const testFiles = list.map(filename => `http://${hostname}:${port}/${filename}`);
   if (!testFiles.length) throw "No tests.";
 
   const server = new FileServer({
