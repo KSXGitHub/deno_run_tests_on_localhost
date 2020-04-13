@@ -35,6 +35,10 @@ deno -A https://deno.land/x/test_on_localhost@0.1.0/cli.ts \
   test/foo.ts test/bar.ts
 ```
 
+### Real-world Examples
+
+* https://github.com/KSXGitHub/yaml-wasm/blob/master/run-tests.ts
+
 ## License
 
 [MIT](https://git.io/Jvjim) © [Hoàng Văn Khải](https://github.com/KSXGitHub/)
