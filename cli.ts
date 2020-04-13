@@ -24,6 +24,8 @@ const parser = args
     alias: ["?"],
     describe: "Show help",
     exit() {
+      console.log("USAGE:");
+      console.log("  deno -A cli.ts [options] ...files");
       console.log(parser.help());
       return Deno.exit(0);
     },
