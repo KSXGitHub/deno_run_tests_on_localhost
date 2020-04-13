@@ -1,6 +1,7 @@
 export {
   posix,
   extname,
+  join,
 } from "https://deno.land/std@v0.40.0/path/mod.ts";
 export {
   ServerRequest,
