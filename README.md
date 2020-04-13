@@ -37,7 +37,7 @@ deno -A https://deno.land/x/test_on_localhost@0.1.0/cli.ts \
 
 ### Real-world Examples
 
-* https://github.com/KSXGitHub/yaml-wasm/blob/master/run-tests.ts
+* https://github.com/KSXGitHub/yaml-wasm/blob/2ac301cf5ac9f72f88ef1f46a08c74c7f6dc3e37/run-tests.ts
 
 ## License
 
