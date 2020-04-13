@@ -12,11 +12,7 @@ import {
 import {
   MAIN_COMMAND,
 } from "https://deno.land/x/args@1.0.2/symbols.ts";
-import {
-  DEFAULT_TEST_FILE_FILTER,
-  FilterFunc,
-  run,
-} from "./run.ts";
+import run from "./run.ts";
 
 const parser = args
   .describe("Run deno test files on localhost")
@@ -76,13 +72,10 @@ const {
 } = parserRes.value;
 
 const testFiles = parserRes.remaining().rawValues();
-let isTestFile: FilterFunc = testFiles.length
-  ? (filename) => testFiles.includes(filename)
-  : DEFAULT_TEST_FILE_FILTER;
 
 Deno.chdir(dir);
 const { code, signal } = await run({
-  isTestFile,
+  list: testFiles.length ? testFiles : undefined,
   hostname,
   port: Number(port),
   deno,
