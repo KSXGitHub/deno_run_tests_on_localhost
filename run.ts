@@ -30,7 +30,8 @@ export async function run(param: Param): Promise<Deno.ProcessStatus> {
     onServe,
   } = param;
 
-  const testFiles = list || await getDefaultList(hostname, port);
+  const testFiles = (list || await getDefaultList())
+    .map(filename => `http://${hostname}:${port}/${filename}`);
   if (!testFiles.length) throw "No tests.";
 
   const server = new FileServer({
