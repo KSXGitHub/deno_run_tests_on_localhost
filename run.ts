@@ -17,6 +17,7 @@ export interface Param {
   readonly onServe?: (request: ServerRequest, response: Response) => void;
   readonly port: number;
   readonly hostname: string;
+  readonly cors?: boolean;
   readonly deno?: string;
   readonly permissions?: readonly string[];
   readonly args?: readonly string[];
@@ -41,6 +42,7 @@ export async function run(param: Param): Promise<Deno.ProcessStatus> {
     deno = "deno",
     permissions = [],
     args = [],
+    cors = false,
     hostname,
     port,
     onServe,
@@ -61,8 +63,8 @@ export async function run(param: Param): Promise<Deno.ProcessStatus> {
     port,
     hostname,
     onServe,
+    cors,
     target: ".",
-    cors: true,
   });
 
   return new Promise(async (resolve, reject) => {
