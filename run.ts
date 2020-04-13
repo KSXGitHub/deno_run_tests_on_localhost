@@ -15,7 +15,6 @@ export interface Param {
   readonly deep?: DeepFunc;
   readonly isTestFile?: FilterFunc;
   readonly onServe?: (request: ServerRequest, response: Response) => void;
-  readonly workDir: string;
   readonly port: number;
   readonly hostname: string;
   readonly deno?: string;
@@ -45,7 +44,6 @@ export async function run(param: Param): Promise<Deno.ProcessStatus> {
     hostname,
     port,
     onServe,
-    workDir,
   } = param;
 
   const testFiles: string[] = [];
@@ -58,8 +56,6 @@ export async function run(param: Param): Promise<Deno.ProcessStatus> {
   if (!testFiles.length) {
     throw "No tests.";
   }
-
-  Deno.chdir(workDir);
 
   const server = new FileServer({
     port,
