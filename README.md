@@ -7,7 +7,7 @@ Create a localhost server and run tests.
 ### Programmatically
 
 ```javascript
-import run from "https://deno.land/x/test_on_localhost@0.1.0/run.ts";
+import run from "https://deno.land/x/test_on_localhost@0.2.2/run.ts";
 
 const { success, code } = await run({
   hostname: "0.0.0.0",
@@ -29,7 +29,7 @@ if (success) {
 File [cli.ts](./cli.ts) can be used as your test runner cli.
 
 ```sh
-deno -A https://deno.land/x/test_on_localhost@0.2.1/cli.ts \
+deno -A https://deno.land/x/test_on_localhost@0.2.2/cli.ts \
   --host 0.0.0.0 \
   --port 8080 \
   test/foo.ts test/bar.ts
