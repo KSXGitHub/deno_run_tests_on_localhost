@@ -42,7 +42,7 @@ export class FileServer {
       let response: Response | undefined;
       try {
         const info = await Deno.stat(fsPath);
-        if (info.isDirectory()) {
+        if (info.isDirectory) {
           response = {
             status: Status.Forbidden,
             body: "Cannot serve directory",

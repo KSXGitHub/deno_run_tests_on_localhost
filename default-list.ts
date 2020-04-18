@@ -1,7 +1,7 @@
 import {
   DeepFunc,
   traverseFileSystem,
-} from "https://deno.land/x/tree@0.1.1/async.ts";
+} from "https://deno.land/x/tree@0.2.0/async.ts";
 import {
   join,
 } from "./deps.ts";
@@ -15,7 +15,7 @@ const deep: DeepFunc = (param) => !DEEP_IGNORE.includes(param.info.name!);
 export async function getDefaultList() {
   const testFiles: string[] = [];
   for await (const item of traverseFileSystem(".", deep)) {
-    const filename = join(item.container, item.info.name!);
+    const filename = join(item.container, item.info.name);
     if (!isTestFile(filename)) continue;
     testFiles.push(filename);
   }
